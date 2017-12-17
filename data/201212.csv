@@ -1,0 +1,17 @@
+交易日期,契約,到期月份,開盤價,最高價,最低價,收盤價,漲跌價,漲跌%,成交量,成交價,結算價,未沖銷契約數,最後最佳買價,最後最佳賣價,歷史最高價,歷史最低價,是否因訊息面暫停交易,交易時段,價差對單式委託成交量
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>èºç£æè²¨äº¤ææ</title>
+
+</head>
+<body>
+
+<script language="javascript">
+location.href="./chinese/index.asp";
+</script>
+
+</body>
+</html>
+
