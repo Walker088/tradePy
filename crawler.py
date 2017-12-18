@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-from time import gmtime, strftime
+from time import gmtime, strftime, sleep
 import requests
 import calendar
 import sys, os
 import csv
+import re
 # savin downloaded file to the folder with .csv format
 def writeCsv(csvLst, fileName, path="data/"):
     os.makedirs(path, exist_ok=True)
@@ -13,6 +14,10 @@ def writeCsv(csvLst, fileName, path="data/"):
         for index in range(1,len(csvLst)):
             csvFile.write(csvLst[index]+'\n')
     print ("finished",fileName)
+def checkFormat(csvStr):
+    # using to check if there 's any date info in the line
+    txDataRegex = re.compile(r'\d{4}/(\d){1,2}/\d{1,2}')
+    return txDataRegex.search(csvStr)
 # the major function of the program,
 # used to send POST and GET requests to
 # http://www.taifex.com and get the trading logs back
@@ -31,7 +36,14 @@ def requestData(datestart, dateend):
     fileAddr = "http://www.taifex.com.tw"+dictHeader["Location"]
     csvStr = (requests.get(fileAddr)).text
     csvLst = csvStr.split('\r\n')
-    writeCsv(csvLst, fileName)
+    # if the downloaded format isn't right then print the result and redo the process
+    if checkFormat(csvStr)==None:
+        print ("didn't download data",datestart[:7])
+        print ("take 5s rest to send request again")
+        sleep(5)
+        requestData(datestart, dateend)
+    else:
+        writeCsv(csvLst, fileName)
 # used to crawl the website with predefined times of loop
 def crawler():
     currentYear = int(strftime("%Y", gmtime()))
@@ -40,8 +52,8 @@ def crawler():
         if year==1998:
             for month in monthes[6:]:
                 lastDay = calendar.monthrange(year,int(month))[1]
-                datestart = str(year)+"/"+str(month)+"/"+"01"
-                dateend   = str(year)+"/"+str(month)+"/"+str(lastDay)
+                datestart = str(year)+"/"+month+"/"+"01"
+                dateend   = str(year)+"/"+month+"/"+str(lastDay)
                 requestData(datestart, dateend)
             continue
         for month in monthes:
