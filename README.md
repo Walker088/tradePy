@@ -18,4 +18,10 @@ Then probably you there're some data exist in the **/data/** folder that you don
 	chmod crawler.py
 	./crawler.py --update
 
+If you don't want to download all the datas but only datas of specific year:
+
+	./crawler.py 2017
+	# ./crawler.py [year]
+
+## Future Works
 I will trying to implement some strategy or algorithm to the data l've collect and share to you guys here later, just tell me with the issue function if there's any problem with the project.

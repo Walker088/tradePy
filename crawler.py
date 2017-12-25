@@ -15,7 +15,7 @@ def writeCsv(csvLst, fileName, path="data/"):
             csvFile.write(csvLst[index]+'\n')
     print ("finished",fileName)
 def checkFormat(csvStr):
-    # using to check if there 's any date info in the line
+    # using to check if there's any date info in the line
     txDataRegex = re.compile(r'\d{4}/(\d){1,2}/\d{1,2}')
     return txDataRegex.search(csvStr)
 def checkSavedData():
@@ -79,9 +79,9 @@ def main():
         if sys.argv[1]=='--update':
             startYear = checkSavedData()
             crawler(startYear)
-        elif checkFormate(sys.argv[1]!=None):
+        elif checkFormat(sys.argv[1])==None:
             # input parameter is year
-            crawler(sys.argv[1])
+            crawler(int(sys.argv[1]))
     print ('Congradulation! Now you got all the TX datas!')
 if __name__=="__main__":
     main()
