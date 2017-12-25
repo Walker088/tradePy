@@ -18,6 +18,16 @@ def checkFormat(csvStr):
     # using to check if there 's any date info in the line
     txDataRegex = re.compile(r'\d{4}/(\d){1,2}/\d{1,2}')
     return txDataRegex.search(csvStr)
+def checkSavedData():
+    # using to check the last saved year of data from the data folder
+    fileLst = list(os.walk('./data/'))
+    # os.walk will return [(dirPath, dirNames, fileNames)]
+    fileNames = [fileName for fileName in fileLst[0][2]]
+    intFileNames = [int(intName[:4]) for intName in fileNames]
+    return max(intFileNames)
+def decodeToUtf8():
+    # using to transform the origin response data to utf8
+    pass
 # the major function of the program,
 # used to send POST and GET requests to
 # http://www.taifex.com and get the trading logs back
@@ -45,10 +55,10 @@ def requestData(datestart, dateend):
     else:
         writeCsv(csvLst, fileName)
 # used to crawl the website with predefined times of loop
-def crawler():
+def crawler(startYear=1998):
     currentYear = int(strftime("%Y", gmtime()))
     monthes = ['01','02','03','04','05','06','07','08','09','10','11','12']
-    for year in range(1998,currentYear+1):
+    for year in range(startYear,currentYear+1):
         if year==1998:
             for month in monthes[6:]:
                 lastDay = calendar.monthrange(year,int(month))[1]
@@ -63,7 +73,15 @@ def crawler():
             requestData(datestart, dateend)
 # the entry point of the program
 def main():
-    crawler()
-
+    if (len(sys.argv)<2):
+        crawler()
+    else:
+        if sys.argv[1]=='--update':
+            startYear = checkSavedData()
+            crawler(startYear)
+        elif checkFormate(sys.argv[1]!=None):
+            # input parameter is year
+            crawler(sys.argv[1])
+    print ('Congradulation! Now you got all the TX datas!')
 if __name__=="__main__":
     main()
