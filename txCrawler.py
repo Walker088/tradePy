@@ -86,7 +86,7 @@ def getAvaDates(baseUrl="https://www.taifex.com.tw/chinese/3/dl_3_1_3.asp"):
     res = requests.get(baseUrl)
     res.encoding = "utf-8"
     dateRegex = re.compile(r'^(\d+/\d+/\d+)$')
-    
+
     bsObj = bs(res.text, "html.parser")
     dateLst = [ date.text.strip() for date in bsObj.findAll("table", {"class":"table_c"})[1] \
                                                    .findAll("td") if dateRegex.search(date.text.strip()) != None ]
@@ -97,7 +97,7 @@ def getTickData(amtFlag):
     avaDates = getAvaDates()
     bar = progressbar.ProgressBar(maxval=len(avaDates), \
                                   widgets=[progressbar.Bar('=', '[', ']'), ' ', progressbar.Percentage()])
-    bar.start() 
+    bar.start()
     for d in range(len(avaDates)):
         fileName, folder = avaDates[d]+".csv", "./data/tickData/"
         res = requests.get(baseUrl+avaDates[d]+".zip")
